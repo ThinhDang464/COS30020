@@ -38,9 +38,9 @@
     <input type="text" id="closingDate" name="closingDate" value="<?php echo date('d/m/y'); ?>" required><br>
 
     <label>Position:</label><br>
-    <input type="radio" id="fullTime" name="position" value="FullTime" required>
+    <input type="radio" id="fullTime" name="position" value="Full Time" required>
     <label for="fullTime">Full Time</label><br>
-    <input type="radio" id="partTime" name="position" value="PartTime">
+    <input type="radio" id="partTime" name="position" value="Part Time">
     <label for="partTime">Part Time</label><br>
 
     <label>Contract:</label><br>
@@ -56,9 +56,9 @@
     <label for="remote">Remote</label><br>
 
     <label>Accept Application by:</label><br>
-    <input type="checkbox" id="post" name="via" value="Post">
+    <input type="checkbox" id="post" name="via[]" value="Post">
     <label for="post">Post</label><br>
-    <input type="checkbox" id="email" name="via" value="Email">
+    <input type="checkbox" id="email" name="via[]" value="Email">
     <label for="email">Email</label><br>
 
     <input type="submit" value="Submit">
