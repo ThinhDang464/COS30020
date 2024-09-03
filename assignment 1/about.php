@@ -17,15 +17,21 @@
             <li class="about"><a href="about.php">About this assignment</a></li>
         </ul>
     </nav>
-    <h1>Job Vacancy Posting System</h1>
-    <div>
-        <ul>
-            <li> PHP version: <?php echo phpversion(); ?> </li>
-            <li> Requirements: I completed all requirements from basic to advance. </li>
-            <li> Advanced: I have used associative array to display the read-in line as single object </li>
-        </ul>
+    <div class="container">
+        <h1>About Assignment 1</h1>
+        <div class="declaration">
+            <h3>About:</h3>
+            <div>
+                <ul>
+                    <li> PHP version: <?php echo phpversion(); ?> </li>
+                    <li> Requirements: I completed all requirements from basic to advance. </li>
+                    <li> Advanced: I have used associative array to display the read-in line as single object </li>
+                </ul>
+            </div>
+        </div>
+        <div class="declaration">
+            <h3>Discussion Contribution:</h3>
+        </div>
     </div>
-    <h2>Discussion Points:</h2>
-
 </body>
 </html>

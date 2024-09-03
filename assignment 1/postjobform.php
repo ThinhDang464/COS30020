@@ -19,52 +19,63 @@
     echo "</ul>";
     echo "</nav>";
 ?>
+<div class="container">
+    <div class="header-container">
+        <button onclick="window.location.href='index.php'" class="home-button">← Home</button>
+        <h1>Post Job Vacancy</h1>
+    </div>
 
-<h1>Post Job Vacancy</h1>
+    <!-- No validation, perform regex and validation in postjobprocess.php -->
 
-<!-- No validation, perform regex and validation in postjobprocess.php -->
+    <form action="postjobprocess.php" method="post">
+        <div class="form-text">
+            <label for="positionId" class="label-text"><strong>Position ID:</strong></label>
+            <input type="text" id="positionId" name="positionId"><br>
 
-<form action="postjobprocess.php" method="post">
-    <label for="positionId">Position ID:</label>
-    <input type="text" id="positionId" name="positionId" required><br>
+            <label for="title" class="label-text"><strong>Title:</strong></label>
+            <input type="text" id="title" name="title"><br>
 
-    <label for="title">Title:</label>
-    <input type="text" id="title" name="title" required><br>
+            <label for="description" class="label-text"><strong>Description:</strong></label>
+            <textarea id="description" name="description" rows="4" cols="50"></textarea><br>
 
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" rows="4" cols="50" required></textarea><br>
+            <label for="closingDate" class="label-text"><strong>Closing Date:</strong></label>
+            <input type="text" id="closingDate" name="closingDate" value="<?php echo date('d/m/y'); ?>" required><br>
+        </div>
 
-    <label for="closingDate">Closing Date:</label>
-    <input type="text" id="closingDate" name="closingDate" value="<?php echo date('d/m/y'); ?>" required><br>
+        <div class="form-radio">
+            <label><strong>Position:</strong></label><br>
+            <input type="radio" id="fullTime" name="position" value="Full Time">
+            <label for="fullTime">Full Time</label><br>
+            <input type="radio" id="partTime" name="position" value="Part Time">
+            <label for="partTime">Part Time</label><br>
+        </div>
 
-    <label>Position:</label><br>
-    <input type="radio" id="fullTime" name="position" value="Full Time" required>
-    <label for="fullTime">Full Time</label><br>
-    <input type="radio" id="partTime" name="position" value="Part Time">
-    <label for="partTime">Part Time</label><br>
+        <div class="form-radio">
+            <label><strong>Contract:</strong></label><br>
+            <input type="radio" id="onGoing" name="contract" value="On-going">
+            <label for="onGoing">On-going</label><br>
+            <input type="radio" id="fixedTerm" name="contract" value="Fixed term">
+            <label for="fixedTerm">Fixed term</label><br>
+        </div>  
 
-    <label>Contract:</label><br>
-    <input type="radio" id="onGoing" name="contract" value="On-going" required>
-    <label for="onGoing">On-going</label><br>
-    <input type="radio" id="fixedTerm" name="contract" value="Fixed term">
-    <label for="fixedTerm">Fixed term</label><br>
+        <div class="form-radio">
+            <label><strong>Location:</strong></label><br>
+            <input type="radio" id="onSite" name="location" value="On site">
+            <label for="onSite">On site</label><br>
+            <input type="radio" id="remote" name="location" value="Remote">
+            <label for="remote">Remote</label><br>
+        </div>
 
-    <label>Location:</label><br>
-    <input type="radio" id="onSite" name="location" value="On site" required>
-    <label for="onSite">On site</label><br>
-    <input type="radio" id="remote" name="location" value="Remote">
-    <label for="remote">Remote</label><br>
+        <div class="form-radio">
+            <label><strong>Accept Application by:</strong></label><br>
+            <input type="checkbox" id="post" name="via[]" value="Post">
+            <label for="post">Post</label><br>
+            <input type="checkbox" id="email" name="via[]" value="Email">
+            <label for="email">Email</label><br>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
 
-    <label>Accept Application by:</label><br>
-    <input type="checkbox" id="post" name="via[]" value="Post">
-    <label for="post">Post</label><br>
-    <input type="checkbox" id="email" name="via[]" value="Email">
-    <label for="email">Email</label><br>
-
-    <input type="submit" value="Submit">
-</form>
-
-<p><a href="index.php">Return to Home</a></p>
-
+</div>
 </body>
 </html>

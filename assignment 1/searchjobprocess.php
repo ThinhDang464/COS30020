@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="assignment 1" />
+<meta name="keywords" content="PHP" />
+<meta name="author" content="Vu Gia Thinh Dang" />
+<title>Post Job Vacancy</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 <?php
 //search filter array:
 $searchfilter = array();
@@ -123,40 +134,66 @@ foreach($matches as $match){
 }
 
 //sort available jobs based on future date
-usort($jobs, function($a, $b){
+usort($jobs, function($a, $b){//sort func for array, comparing the formattedClosingDate of jobs array element
     return strcmp($b['formattedClosingDate'], $a['formattedClosingDate']);
 });
+
+//today's date
+$today = date('Y-m-d'); //yyyy-mm-dd
+
 //display
+echo "<nav>";
+    echo "<ul>";
+    echo "<li><a href='index.php'>Home</a></li>";
+    echo "<li><a href='postjobform.php'>Post a job vacancy</a></li>";
+    echo "<li><a href='searchjobform.php'>Search for a job vacancy</a></li>";
+    echo "<li class='about'><a href='about.php'>About this assignment</a></li>";
+    echo "</ul>";
+    echo "</nav>";
+    echo "<div class='container'>";
+    echo "<div class='header-container'>";
+    echo "<button onclick=\"window.location.href='index.php'\" class='home-button'>← Home</button>";
+    echo "<button onclick=\"window.location.href='searchjobform.php'\" class='home-button'>Search →</button>";
+    echo "<h1>Available Jobs</h1>";
+    echo "</div>";
 if (!empty($jobs)){
-    echo "<h2>Available Jobs:</h2>";
+    $foundActiveJobs = false;
+    echo "<div class='jobs'>";
     foreach ($jobs as $job) {
-        echo "<div class='job'>";
-        echo "<p><strong>Position ID: " . htmlspecialchars($job['positionId']) . "</strong></p>";
-        echo "<p><strong>Title: " . htmlspecialchars($job['title']) . "</strong></h3>";
-        echo "<p>Description: " . htmlspecialchars($job['description']) . "</p>";
-        echo "<p>Closing Date: " . htmlspecialchars($job['closingDate']) . "</p>";
-        echo "<p>Position: " . htmlspecialchars($job['position']) . "</p>";
-        echo "<p>Contract: " . htmlspecialchars($job['contract']) . "</p>";
-        echo "<p>Location: " . htmlspecialchars($job['location']) . "</p>";
-        echo "<p>Accept Application by: ";
-        if (!empty($job['viaPost'])){
-            echo "Post";
-        }
-        if(!empty($job['viaEmail'])){
+        //check against today's day
+        if  ($job['formattedClosingDate'] >= $today){
+            $foundActiveJobs = true;
+            echo "<div class='job'>";
+            echo "<p><strong>Position ID:</strong> " . htmlspecialchars($job['positionId']) . "</p>";
+            echo "<p><strong>Title:</strong> " . htmlspecialchars($job['title']) . "</p>";
+            echo "<p><strong>Description:</strong> " . htmlspecialchars($job['description']) . "</p>";
+            echo "<p><strong>Closing Date:</strong> " . htmlspecialchars($job['closingDate']) . "</p>";
+            echo "<p><strong>Position:</strong> " . htmlspecialchars($job['position']) . "</p>";
+            echo "<p><strong>Contract:</strong> " . htmlspecialchars($job['contract']) . "</p>";
+            echo "<p><strong>Location:</strong> " . htmlspecialchars($job['location']) . "</p>";
+            echo "<p><strong>Accept Application by:</strong> ";
             if (!empty($job['viaPost'])){
-                echo ", ";
+                echo "Post";
             }
-            echo "Email";
-        }
-        echo "</p>";
-        echo "</div><br>";
+            if(!empty($job['viaEmail'])){
+                if (!empty($job['viaPost'])){
+                    echo ", ";
+                }
+                echo "Email";
+            }
+            echo "</p>";
+            echo "</div><br>";
+        }  
     }
-    echo "<p><a href='index.php'>Return to Home</a></p>";
-    echo "<p><a href='searchjobform.php'>Return to Search Job Vacancy</a></p>";
+    echo "</div>";
+    if (!$foundActiveJobs) {
+        echo "<p>All jobs have expired.</p>";
+    }
+    echo"</div>";
 }else {
     //No matches
-    echo "<p>No available job found at the moment.</p>";
-    echo "<p><a href='index.php'>Return to Home</a></p>";
-    echo "<p><a href='searchjobform.php'>Return to Search Job Vacancy</a></p>";
+    echo "<div class='no-jobs-message'><p>No available job found at the moment.</p></div>";
 }
 ?>
+</body>
+</html>

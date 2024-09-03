@@ -1,3 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="description" content="assignment 1" />
+<meta name="keywords" content="PHP" />
+<meta name="author" content="Vu Gia Thinh Dang" />
+<title>Post Job Vacancy</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a href='index.php'>Home</a></li>
+        <li><a href='postjobform.php'>Post a job vacancy</a></li>
+        <li><a href='searchjobform.php'>Search for a job vacancy</a></li>
+        <li class='about'><a href='about.php'>About this assignment</a></li>
+    </ul>
+</nav>
 <?php
     //sanitizing input from user
     function sanitizeInput($input){
@@ -13,7 +32,7 @@
 
         //Check positionID
         if (!preg_match('/^ID\d{3}$/', $data['positionId'])){
-            $errors[] = "Position ID should start with ID + 3 digits please follow the format!";
+            $errors[] = "Position ID should start with ID + 3 digits.";
         }
 
         //Check TITLE
@@ -23,7 +42,7 @@
 
         //Check description
         if (strlen($data['description']) > 250) {
-            $errors[] = "Description can only contain a maximum of 250 characters!";
+            $errors[] = "Description can only contain a maximum of 250 characters.";
         }
 
         //Check CLosing date
@@ -62,10 +81,13 @@
        file_put_contents($filename, $row, FILE_APPEND | LOCK_EX); //best concurrency pratice
 
        //Success msg
-        echo "<p>Job vacancy has been successfully stored.</p>";
-        echo "<p><a href='index.php'>Return to Home</a></p>";
+       echo"<div class='header-container'>";
+       echo "<button onclick=\"window.location.href='postjobform.php'\" class='home-button'>← Post</button>";
+       echo "<h1>Job has been posted!</h1>";
+       echo "<button onclick=\"window.location.href='index.php'\" class='home-button'>Home →</button>";
     }
 
+    echo"<div class='container'>";
     //Check if submitted fields exist
     if (isset($_POST['positionId']) && !empty($_POST['positionId']) &&
     isset($_POST['title']) && !empty($_POST['title']) &&
@@ -101,19 +123,25 @@
             // Display success message or redirect to a success page
         } else {
             // Display validation errors
-            echo "<h2>Error:</h2>";
-            echo "<ul>";
+            echo"<div class='header-container'>";
+            echo "<button onclick=\"window.location.href='postjobform.php'\" class='home-button'>← Post</button>";
+            echo "<h1>Error while posting job!</h1>";
+            echo "<button onclick=\"window.location.href='index.php'\" class='home-button'>Home →</button>";
+            echo "</div>";
             foreach ($errors as $error) {
-                echo "<li>$error</li>";
+                echo "<p class='no-jobs-message'>$error</p>";
             }
-            echo "</ul>";
-            echo "<p><a href='index.php'>Return to Home</a></p>";
-            echo "<p><a href='postjobform.php'>Return to Post Job Form</a></p>";
         }
     } else {
         //missing input
-        echo "<p>Please fill in all the input fields!</p>";
-        echo "<p><a href='index.php'>Return to Home</a></p>";
-        echo "<p><a href='postjobform.php'>Return to Post Job Form</a></p>";
+        echo"<div class='header-container'>";
+        echo "<button onclick=\"window.location.href='postjobform.php'\" class='home-button'>← Post</button>";
+        echo "<h1>Error while posting job!</h1>";
+        echo "<button onclick=\"window.location.href='index.php'\" class='home-button'>Home →</button>";
+        echo "</div>";
+        echo "<p class='no-jobs-message'>Please fill in all the input fields!</p>";
     }
+    echo "</div>";
 ?>
+</body>
+</html>
