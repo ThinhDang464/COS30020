@@ -7,7 +7,7 @@
 <meta name="keywords" content="PHP" />
 <meta name="author" content="Vu Gia Thinh Dang" />
 <title>Job Vacancy Posting System</title>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <?php 
