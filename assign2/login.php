@@ -49,7 +49,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Friends System - Login</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="navigation">
@@ -62,8 +62,8 @@
         </ul>
     </div>
 
-    <div class="login-form">
-        <h2>Login</h2>
+    <div class="registration-form">
+        <h1>Login</h1>
         <?php
         if (!empty($errors)) {
             echo "<div class='errors'>";
@@ -87,7 +87,9 @@
                 <input type="button" value="Clear" class="clear-button" onclick="window.location.href='login.php';">
             </div>
         </form>
-        <p><a href="index.php">Return to Home</a></p>
+        <div class="return-to-home">
+            <a href="index.php">Return to Home</a>
+        </div>
     </div>
 </body>
 </html>

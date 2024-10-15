@@ -59,32 +59,43 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Friends System - Friend List</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>My Friend System</h1>
-    <h2><?php echo htmlspecialchars($profileName); ?>'s Friend List Page</h2>
-    <p>Total number of friends is <?php echo $numFriends; ?></p>
+    <div class="navigation">
+        <h1>My Friend System</h1>
+        <ul class="nav">
+            <li class="nav-link"><a href="friendlist.php">Friend List</a></li>
+            <li class="nav-link"><a href="friendadd.php">Add Friends</a></li>
+            <li class="nav-link"><a href="logout.php">Log Out</a></li>
+        </ul>
+    </div>
 
-    <table>
-        <tr>
-            <th>Friend's Profile Name</th>
-            <th>Unfriend</th>
-        </tr>
-        <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($row['profile_name']); ?></td>
-                <td>
-                    <form method="post" action="friendlist.php">
-                        <input type="hidden" name="unfriend" value="<?php echo $row['friend_id']; ?>">
-                        <input type="submit" value="Unfriend">
-                    </form>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
+    <div class="content">
+        <h2><?php echo htmlspecialchars($profileName); ?>'s Friend List</h2>
+        <p class="friend-count">Total number of friends: <?php echo $numFriends; ?></p>
 
-    <p><a href="friendadd.php">Add Friends</a></p>
-    <p><a href="logout.php">Log Out</a></p>
+        <table class="friend-table">
+            <thead>
+                <tr>
+                    <th>Friend's Profile Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['profile_name']); ?></td>
+                        <td>
+                            <form method="post" action="friendlist.php">
+                                <input type="hidden" name="unfriend" value="<?php echo $row['friend_id']; ?>">
+                                <input type="submit" value="Unfriend" class="unfriend-button">
+                            </form>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

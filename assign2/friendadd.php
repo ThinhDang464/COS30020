@@ -26,9 +26,9 @@ $profileName = $user['profile_name'];
 // Pagination setup
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page, default is 1
 $perPage = 10; // Number of items per page
-$start = ($page > 1) ? ($page * $perPage) - $perPage : 0; // Calculate the starting point for LIMIT clause
+$start = ($page > 1) ? ($page * $perPage) - $perPage : 0; // Calculate the starting point for LIMIT clause (page 1 = 0, page 2 = 10, 3 = 20, etc.)
 
-// Get total number of potential friends
+// Get total number of potential friends (not friend with current user)
 $total_sql = "SELECT COUNT(*) as total FROM $tableName1 f 
               WHERE f.friend_id != $userId 
               AND f.friend_id NOT IN (
@@ -37,12 +37,12 @@ $total_sql = "SELECT COUNT(*) as total FROM $tableName1 f
                   WHERE friend_id1 = $userId OR friend_id2 = $userId
               )";
 $total_result = mysqli_query($conn, $total_sql);
-$total = mysqli_fetch_assoc($total_result)['total'];
-$pages = ceil($total / $perPage); // Calculate total number of pages
+$total = mysqli_fetch_assoc($total_result)['total']; //total alias -> total num of potential friends
+$pages = ceil($total / $perPage); // Calculate total number of pages needed round up
 
 // Get list of users who are not friends with the current user (paginated) and count mutual friends
 $sql = "SELECT f.friend_id, f.profile_name,
-        (SELECT COUNT(*) FROM $tableName2 mf1
+        (SELECT COUNT(*) FROM $tableName2 mf1 
          WHERE (mf1.friend_id1 = f.friend_id OR mf1.friend_id2 = f.friend_id)
          AND (mf1.friend_id1 IN (SELECT IF(friend_id1 = $userId, friend_id2, friend_id1)
                                  FROM $tableName2 WHERE friend_id1 = $userId OR friend_id2 = $userId)
@@ -61,11 +61,8 @@ $sql = "SELECT f.friend_id, f.profile_name,
 $result = mysqli_query($conn, $sql);
 
 // Explanation of the mutual friends count subquery:
-// 1. It counts the number of rows in myfriends table where:
-//    a. One of the friend IDs matches the potential friend's ID
-//    b. The other friend ID is in the list of current user's friends
-// 2. This effectively counts how many of the potential friend's friends are also friends with the current user
-
+// line 46: This checks for friendships involving the potential friend. look for row where the friendid is id1 or 2
+//line 47 and below: This checks if the other person in the friendship is a friend of user
 // Handle add friend action
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_friend'])) {
     $friendToAdd = $_POST['add_friend'];
@@ -92,48 +89,58 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Friends System - Add Friends</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>My Friend System</h1>
-    <h2>Add Friends for <?php echo htmlspecialchars($profileName); ?></h2>
-
-    <table>
-        <tr>
-            <th>Profile Name</th>
-            <th>Mutual Friends</th>
-            <th>Action</th>
-        </tr>
-        <?php while ($row = mysqli_fetch_assoc($result)): ?>
-            <tr>
-                <td><?php echo htmlspecialchars($row['profile_name']); ?></td>
-                <td><?php echo $row['mutual_friends_count']; ?></td>
-                <td>
-                    <form method="post" action="friendadd.php">
-                        <input type="hidden" name="add_friend" value="<?php echo $row['friend_id']; ?>">
-                        <input type="submit" value="Add as Friend">
-                    </form>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
-
-    <!-- Pagination links -->
-    <div class="pagination">
-        <?php if ($page > 1): ?>
-            <a href="?page=<?php echo $page-1; ?>">Previous</a>
-        <?php endif; ?>
-
-        <?php for ($i = 1; $i <= $pages; $i++): ?>
-            <a href="?page=<?php echo $i; ?>" <?php echo ($i == $page) ? 'class="active"' : ''; ?>><?php echo $i; ?></a>
-        <?php endfor; ?>
-
-        <?php if ($page < $pages): ?>
-            <a href="?page=<?php echo $page+1; ?>">Next</a>
-        <?php endif; ?>
+    <div class="navigation">
+        <h1>My Friend System</h1>
+        <ul class="nav">
+            <li class="nav-link"><a href="friendlist.php">Friend List</a></li>
+            <li class="nav-link"><a href="friendadd.php">Add Friends</a></li>
+            <li class="nav-link"><a href="logout.php">Log Out</a></li>
+        </ul>
     </div>
 
-    <p><a href="friendlist.php">Friend List</a></p>
-    <p><a href="logout.php">Log Out</a></p>
+    <div class="content">
+        <h2>Add Friends for <?php echo htmlspecialchars($profileName); ?></h2>
+
+        <table class="friend-table">
+            <thead>
+                <tr>
+                    <th>Profile Name</th>
+                    <th>Mutual Friends</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($row['profile_name']); ?></td>
+                        <td><?php echo $row['mutual_friends_count']; ?></td>
+                        <td>
+                            <form method="post" action="friendadd.php">
+                                <input type="hidden" name="add_friend" value="<?php echo $row['friend_id']; ?>">
+                                <input type="submit" value="Add as Friend" class="add-friend-button">
+                            </form>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page-1; ?>" class="page-link">Previous</a>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $pages; $i++): ?>
+                <a href="?page=<?php echo $i; ?>" class="page-link <?php echo ($i == $page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
+            <?php endfor; ?>
+
+            <?php if ($page < $pages): ?>
+                <a href="?page=<?php echo $page+1; ?>" class="page-link">Next</a>
+            <?php endif; ?>
+        </div>
+    </div>
 </body>
 </html>

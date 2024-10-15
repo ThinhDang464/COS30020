@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Friends System</title>
-  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="navigation">
@@ -26,6 +26,7 @@
     </div>
 
     <div class="database">
+        <h2>Status Messages</h2>
         <?php
             require_once("setup.php");
             //establishing connection

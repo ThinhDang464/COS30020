@@ -52,18 +52,6 @@
         mysqli_close($conn);
     }
 ?>
-<div class="navigation">
-    <h1>My Friends System </h1>
-    <ul class="nav">
-    <li class="nav-link"><a href="index.php">Home</a></li>
-    <li class="nav-link"><a href="signup.php">Sign Up</a></li>
-    <li class="nav-link"><a href="login.php">Login</a></li>
-    <li class="nav-link"><a href="about.php">About</a></li>
-    </ul>
-</div>
-
-<div class="registration-form">
-<h1>Registration Page</h1>
 <?php
 if (!empty($errors)) {
     echo "<div class='errors'>";
@@ -79,9 +67,20 @@ if (!empty($errors)) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Friends System</title>
-  <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="navigation">
+        <h1>My Friends System </h1>
+        <ul class="nav">
+        <li class="nav-link"><a href="index.php">Home</a></li>
+        <li class="nav-link"><a href="signup.php">Sign Up</a></li>
+        <li class="nav-link"><a href="login.php">Login</a></li>
+        <li class="nav-link"><a href="about.php">About</a></li>
+        </ul>
+    </div>
+    <div class="registration-form">
+    <h1>Registration Page</h1>
     <form method="post" action="signup.php">
         <div class="form-group">
             <label for="email">Email</label>
